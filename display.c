@@ -12,6 +12,7 @@ for red, green and blue respectively
 
 #include "ml6.h"
 #include "display.h"
+#include "matrix.h"
 
 color change_color( int i ) {
   
@@ -79,6 +80,34 @@ void plot( screen s, color c, int x, int y) {
   int newy = YRES - 1 - y;
   if ( x >= 0 && x < XRES && newy >=0 && newy < YRES )
     s[x][newy] = c;
+}
+
+void plotz(screen s, color c, int x, int y, double z, struct matrix * buffz){
+  int ny = YRES - 1 - y;
+  color tem;
+  if(x >= 0 && x < XRES && ny >= 0 && ny < YRES && z > buffz->m[x][ny]){
+    buffz->m[x][ny] = z;
+    if(c.red >= 2255){
+      c.red = 255;
+    }
+    else if(c.red <= 0){
+      c.red = 0;
+    }
+    if(c.green >= 255){
+      c.green = 255;
+    }
+    else if(c.green <= 255){
+      c.green = 0;
+    }
+    if(c.blue >= 255){
+      c.blue = 255;
+    }
+    else if(c.blue <= 255){
+      c.blue = 0;
+    }
+    s[x][ny] = tem;
+  }
+
 }
 
 /*======== void clear_screen() ==========

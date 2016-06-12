@@ -43,7 +43,7 @@ Inputs: double x0, double y0,
         screen s, color c
 	================================*/
 
-void scan_line(double x0, double y0,
+void scanline(double x0, double y0,
 	       double x1, double y1,
 	       double x2, double y2,
 	       screen s, color c){
@@ -163,28 +163,28 @@ triangles
 04/16/13 13:13:27
 jdyrlandweaver
 ====================*/
-void draw_polygons( struct matrix *polygons, screen s, color c ) {
+void draw_polygonsz( struct matrix *polygons, screen s, color c, struct matrix * buffz) {
   
   int i;  
   for( i=0; i < polygons->lastcol-2; i+=3 ) {
 
     if ( calculate_dot( polygons, i ) < 0 ) {
-      draw_line( polygons->m[0][i],
+      draw_linez( polygons->m[0][i],
 		 polygons->m[1][i],
 		 polygons->m[0][i+1],
 		 polygons->m[1][i+1],
-		 s, c);
-      draw_line( polygons->m[0][i+1],
+		  s, c, buffz);
+      draw_linez( polygons->m[0][i+1],
 		 polygons->m[1][i+1],
 		 polygons->m[0][i+2],
 		 polygons->m[1][i+2],
-		 s, c);
-      draw_line( polygons->m[0][i+2],
+		 s, c, buffz);
+      draw_linez( polygons->m[0][i+2],
 		 polygons->m[1][i+2],
 		 polygons->m[0][i],
 		 polygons->m[1][i],
-		 s, c);
-      scan_line(polygons->m[0][i], polygons->m[1][i], polygons->m[0][i+1], polygons->m[1][i+1], polygons->m[0][i+2], polygons->m[1][i+2], s, c);
+		  s, c, buffz);
+      scanline(polygons->m[0][i], polygons->m[1][i], polygons->m[0][i+1], polygons->m[1][i+1], polygons->m[0][i+2], polygons->m[1][i+2], s, c);
     }
   }
 }
@@ -671,7 +671,7 @@ Returns:
 Go through points 2 at a time and call draw_line to add that line
 to the screen
 ====================*/
-void draw_lines( struct matrix * points, screen s, color c) {
+void draw_linesz( struct matrix * points, screen s, color c, struct matrix * buffz) {
 
   int i;
  
@@ -683,7 +683,7 @@ void draw_lines( struct matrix * points, screen s, color c) {
 
   for ( i = 0; i < points->lastcol - 1; i+=2 ) {
 
-    draw_line( points->m[0][i], points->m[1][i], 
+    draw_linez( points->m[0][i], points->m[1][i], 
 	       points->m[0][i+1], points->m[1][i+1], s, c);
     //FOR DEMONSTRATION PURPOSES ONLY
     //draw extra pixels so points can actually be seen    
@@ -709,19 +709,24 @@ void draw_lines( struct matrix * points, screen s, color c) {
 }
 
 
-void draw_line(int x0, int y0, int x1, int y1, screen s, color c) {
+void draw_linez(int x0, int y0, double z0, int x1, int y1, double z1, screen s, color c) {
  
-  int x, y, d, dx, dy;
+  int x, y, z, d, dx, dy, dz;
+  int step;
+  double inc;
 
   x = x0;
   y = y0;
-  
+  z = z0;
+
   //swap points so we're always draing left to right
   if ( x0 > x1 ) {
     x = x1;
     y = y1;
+    z = z1;
     x1 = x0;
     y1 = y0;
+    z1 = z0;
   }
 
   //need to know dx and dy for this version
@@ -734,10 +739,11 @@ void draw_line(int x0, int y0, int x1, int y1, screen s, color c) {
     //slope < 1: Octant 1 (5)
     if ( dx > dy ) {
       d = dy - ( dx / 2 );
-  
+      step = x1 - x;
+      inc = (z1 - z)/step;
       while ( x <= x1 ) {
-	plot(s, c, x, y);
-
+	plot(s, c, x, y, z, zbuff);
+	z = z + inc;
 	if ( d < 0 ) {
 	  x = x + 1;
 	  d = d + dy;
@@ -753,9 +759,12 @@ void draw_line(int x0, int y0, int x1, int y1, screen s, color c) {
     //slope > 1: Octant 2 (6)
     else {
       d = ( dy / 2 ) - dx;
+      step = y1 - y;
+      inc = (z1 - z)/step;
       while ( y <= y1 ) {
 
-	plot(s, c, x, y );
+	plotz(s, c, x, y, z, buffz);
+	z = z + inc;
 	if ( d > 0 ) {
 	  y = y + 1;
 	  d = d - dx;
@@ -776,11 +785,12 @@ void draw_line(int x0, int y0, int x1, int y1, screen s, color c) {
     if ( dx > abs(dy) ) {
 
       d = dy + ( dx / 2 );
-  
+      step = x1 - x;
+      inc = (z1 - z)/step;
       while ( x <= x1 ) {
 
-	plot(s, c, x, y);
-
+	plotz(s, c, x, y, z, buffz);
+	z = z + inc;
 	if ( d > 0 ) {
 	  x = x + 1;
 	  d = d + dy;
@@ -797,10 +807,11 @@ void draw_line(int x0, int y0, int x1, int y1, screen s, color c) {
     else {
 
       d =  (dy / 2) + dx;
-
+      step = y - y1;
+      inc = (z1 - z)/step;
       while ( y >= y1 ) {
 	
-	plot(s, c, x, y );
+	plotz(s, c, x, y, z, buffz);
 	if ( d < 0 ) {
 	  y = y - 1;
 	  d = d + dx;

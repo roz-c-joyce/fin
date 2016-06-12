@@ -13,9 +13,11 @@ Once allocated, access the matrix as follows:
 m->m[r][c]=something;
 if (m->lastcol)... 
 */
-struct matrix *new_matrix(int rows, int cols) {
+struct matrix *new_matrixz(int rows, int cols) {
   double **tmp;
   int i;
+  int f = 0; 
+  int g = 0;
   struct matrix *m;
 
   tmp = (double **)malloc(rows * sizeof(double *));
@@ -28,7 +30,13 @@ struct matrix *new_matrix(int rows, int cols) {
   m->rows = rows;
   m->cols = cols;
   m->lastcol = 0;
-
+  while(f < rows){
+    while(g < rows){
+      m->m[f][g] = -99999;
+      g++;
+    }
+    f++;
+  }
   return m;
 }
 

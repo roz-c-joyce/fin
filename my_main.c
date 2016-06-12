@@ -318,12 +318,18 @@ void process_knobs() {
   jdyrlandweaver
   ====================*/
 void my_main( int polygons ) {
-
+  
+  int red, green, blue;
+  double vx, vy, vz;
+  vx = 0;
+  vy = 0;
+  vz = 0;
   int i, f, j;
   double step;
   double xval, yval, zval, knob_value;
   struct matrix *transform;
   struct matrix *tmp;
+  struct matrix *buffz = new_matrixz(XRES, YRES);
   struct stack *s;
   screen t;
   color g;
@@ -387,7 +393,7 @@ void my_main( int polygons ) {
 		    step);
 	//apply the current top origin
 	matrix_mult( s->data[ s->top ], tmp );
-	draw_polygons( tmp, t, g );
+	draw_polygonsz( tmp, t, g, buffz);
 	tmp->lastcol = 0;
 	break;
 
@@ -399,7 +405,7 @@ void my_main( int polygons ) {
 		   op[i].op.torus.r1,
 		   step);
 	matrix_mult( s->data[ s->top ], tmp );
-	draw_polygons( tmp, t, g );
+	draw_polygonsz( tmp, t, g, buffz);
 	tmp->lastcol = 0;
 	break;
 
@@ -411,7 +417,7 @@ void my_main( int polygons ) {
 		 op[i].op.box.d1[1],
 		 op[i].op.box.d1[2]);
 	matrix_mult( s->data[ s->top ], tmp );
-	draw_polygons( tmp, t, g );
+	draw_polygonsz( tmp, t, g, buffz);
 	tmp->lastcol = 0;
 	break;
 
@@ -422,7 +428,7 @@ void my_main( int polygons ) {
 		  op[i].op.line.p1[0],
 		  op[i].op.line.p1[1],
 		  op[i].op.line.p1[1]);
-	draw_lines( tmp, t, g );
+	draw_linesz( tmp, t, g, buffz);
 	tmp->lastcol = 0;
 	break;
 

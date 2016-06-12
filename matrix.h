@@ -11,7 +11,7 @@ struct matrix {
 } matrix;
 
 //Basic matrix manipulation routines
-struct matrix *new_matrix(int rows, int cols);
+struct matrix *new_matrixz(int rows, int cols);
 void free_matrix(struct matrix *m);
 void grow_matrix(struct matrix *m, int newcols);
 void copy_matrix(struct matrix *a, struct matrix *b);
