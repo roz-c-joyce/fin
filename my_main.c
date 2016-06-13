@@ -384,7 +384,13 @@ void my_main( int polygons ) {
 	  if ( symtab[j].type == SYM_VALUE )
 	    symtab[j].s.value = op[i].op.setknobs.value;
 	break;
+	
 
+      case MESH:
+	add_mesh(tmp, op[].op.mesh.);
+	matrix_mult(s->data[s->top], tmp);
+	draw_polygonsz(tmp, t, g, buffz);
+	tmp->lastcol = 0;
       case SPHERE:
 	add_sphere( tmp,op[i].op.sphere.d[0], //cx
 		    op[i].op.sphere.d[1],  //cy

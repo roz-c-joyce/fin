@@ -5,7 +5,7 @@
 #include "symtab.h"
 
 #define MAX_STEPS 100
-
+void add_mesh(struct matrix *polygons, char * file);
 void draw_linez(int x0, int y0, double z0, 
 		int x1, int y1, double z1,
 		screen s, color c, struct matrix * buffz);
@@ -20,7 +20,6 @@ void add_polygons( struct matrix * points,
 		   double x2, double y2, double z2);
 void draw_linesz( struct matrix * points, screen s, color c, struct matrix * buffz);
 void draw_polygonsz( struct matrix * points, screen s, color c, struct matrix * buffz);
-
 void scanline(double x0, double y0,
 	      double x1, double y1,
 	      double x2, double y2,

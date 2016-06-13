@@ -36,6 +36,20 @@ void add_polygon( struct matrix *polygons,
   add_point(polygons, x2, y2, z2);
 }
 
+void add_mesh(struct matrix *polygons, char * file){
+  //int f = open(file, O_RDONLY);
+  //int ba[
+  int x0; int y0; int z0;
+  int x1; int y1; int z1;
+  int x2; int y2; int z2;
+  FILE *fr = fopen (file, "rt");
+  while(fgets(line, 150, fr) != NULL){
+    sscanf(line, "%lf", "%lf", "&lf", "%lf", "%lf", "%lf", "%lf", "%lf", "%lf", &x0, &y0, &z0, &x1, &y1, &z1, &x2, &y2, &z2);
+    add_polygon(polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2);
+  }
+  fclose(fr);
+}
+
 /*=====void scan_line()==========
 Inputs: double x0, double y0,
         double x1, double y1,

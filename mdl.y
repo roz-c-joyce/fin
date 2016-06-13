@@ -191,6 +191,15 @@ TEXTURE STRING DOUBLE DOUBLE DOUBLE DOUBLE DOUBLE DOUBLE DOUBLE DOUBLE DOUBLE DO
   op[lastop].op.texture.p = add_symbol($2,SYM_FILE,0);
   lastop++;
 }|
+MESH STRING
+{
+  lineo++;
+  op[lastop].opcode = MESH;
+  op[lastop].op.mesh.d[0] = $2;
+  op[lastop].op.mesh.constants = NULL;
+  op[lastop].op.mesh.cs = NULL;
+  lastop++;
+}|
 SPHERE DOUBLE DOUBLE DOUBLE DOUBLE
 {
   lineno++;

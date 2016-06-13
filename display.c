@@ -87,7 +87,7 @@ void plotz(screen s, color c, int x, int y, double z, struct matrix * buffz){
   color tem;
   if(x >= 0 && x < XRES && ny >= 0 && ny < YRES && z > buffz->m[x][ny]){
     buffz->m[x][ny] = z;
-    if(c.red >= 2255){
+    /*if(c.red >= 2255){
       c.red = 255;
     }
     else if(c.red <= 0){
@@ -104,7 +104,7 @@ void plotz(screen s, color c, int x, int y, double z, struct matrix * buffz){
     }
     else if(c.blue <= 255){
       c.blue = 0;
-    }
+      }*/
     s[x][ny] = tem;
   }
 
