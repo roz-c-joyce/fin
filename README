@@ -1,3 +1,7 @@
+NOTE: I know this doesn't curently work. I've been working really hard to try to fix and debug the importing of a 3d mesh. As far as I know, scanline mostly works and zbuffer kind of does, but I just cant seem to get the mesh to work. I have changed things around a bunch and no matter how I fiddle with it I can't seem to get it to compile. 
+
+
+
 Files
 -----
 README 		- this file.

@@ -50,7 +50,11 @@ struct command
       double d3[3];
       SYMTAB *p;
       SYMTAB *cs;
-    } texture;
+    } meshh;
+    struct {
+      SYMTAB *constants;
+      char * d[3];
+    }texture;
     struct {
       SYMTAB *constants;
       double d[4];

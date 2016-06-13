@@ -39,6 +39,7 @@ void add_polygon( struct matrix *polygons,
 void add_mesh(struct matrix *polygons, char * file){
   //int f = open(file, O_RDONLY);
   //int ba[
+  char line[100];
   int x0; int y0; int z0;
   int x1; int y1; int z1;
   int x2; int y2; int z2;
@@ -185,18 +186,24 @@ void draw_polygonsz( struct matrix *polygons, screen s, color c, struct matrix *
     if ( calculate_dot( polygons, i ) < 0 ) {
       draw_linez( polygons->m[0][i],
 		 polygons->m[1][i],
+		  polygons->m[2][i],
 		 polygons->m[0][i+1],
 		 polygons->m[1][i+1],
+		  polygons->m[2][i+1],
 		  s, c, buffz);
       draw_linez( polygons->m[0][i+1],
 		 polygons->m[1][i+1],
+		  polygons->m[2][i+1],
 		 polygons->m[0][i+2],
 		 polygons->m[1][i+2],
+		  polygons->m[2][i+2],
 		 s, c, buffz);
       draw_linez( polygons->m[0][i+2],
 		 polygons->m[1][i+2],
+		  polygons->m[2][i+2],
 		 polygons->m[0][i],
 		 polygons->m[1][i],
+		  polygons->m[2][i],
 		  s, c, buffz);
       scanline(polygons->m[0][i], polygons->m[1][i], polygons->m[0][i+1], polygons->m[1][i+1], polygons->m[0][i+2], polygons->m[1][i+2], s, c);
     }
@@ -697,8 +704,8 @@ void draw_linesz( struct matrix * points, screen s, color c, struct matrix * buf
 
   for ( i = 0; i < points->lastcol - 1; i+=2 ) {
 
-    draw_linez( points->m[0][i], points->m[1][i], 
-	       points->m[0][i+1], points->m[1][i+1], s, c);
+    draw_linez( points->m[0][i], points->m[1][i], points->m[2][i], 
+		points->m[0][i+1], points->m[1][i+1], points->m[2][i+1], s, c, buffz);
     //FOR DEMONSTRATION PURPOSES ONLY
     //draw extra pixels so points can actually be seen    
     /*
@@ -723,7 +730,7 @@ void draw_linesz( struct matrix * points, screen s, color c, struct matrix * buf
 }
 
 
-void draw_linez(int x0, int y0, double z0, int x1, int y1, double z1, screen s, color c) {
+void draw_linez(int x0, int y0, double z0, int x1, int y1, double z1, screen s, color c, struct matrix * buffz) {
  
   int x, y, z, d, dx, dy, dz;
   int step;
@@ -756,7 +763,7 @@ void draw_linez(int x0, int y0, double z0, int x1, int y1, double z1, screen s, 
       step = x1 - x;
       inc = (z1 - z)/step;
       while ( x <= x1 ) {
-	plot(s, c, x, y, z, zbuff);
+	plotz(s, c, x, y, z, buffz);
 	z = z + inc;
 	if ( d < 0 ) {
 	  x = x + 1;

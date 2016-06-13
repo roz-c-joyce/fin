@@ -387,7 +387,7 @@ void my_main( int polygons ) {
 	
 
       case MESH:
-	add_mesh(tmp, op[i].op.mesh.d[0]);
+	add_mesh(tmp, op[i].op.mesh.name);
 	matrix_mult(s->data[s->top], tmp);
 	draw_polygonsz(tmp, t, g, buffz);
 	tmp->lastcol = 0;
